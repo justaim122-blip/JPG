@@ -68,6 +68,31 @@
             z-index: 1;
         }
 
+        /* Music Button */
+        .music-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 990; /* أقل من الـ lightbox عشان مايغطيش على الصور */
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-btn:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+
         /* Lightbox Overlay */
         .lightbox {
             position: fixed;
@@ -163,6 +188,13 @@
                 right: 25px;
                 font-size: 35px;
             }
+
+            .music-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -173,7 +205,7 @@
     </header>
 
     <main class="gallery-container">
-        <!-- تم تعديل مسار الصور هنا عشان تقرأ من فولدر JPG -->
+        <!-- الصور جوه فولدر JPG -->
         <img src="JPG/1.jpg" alt="Gallery Image 1" class="gallery-item" data-index="0">
         <img src="JPG/2.jpg" alt="Gallery Image 2" class="gallery-item" data-index="1">
         <img src="JPG/3.jpg" alt="Gallery Image 3" class="gallery-item" data-index="2">
@@ -185,6 +217,17 @@
         <p>&copy; 2026 Image Gallery. All rights reserved.</p>
     </footer>
 
+    <!-- Audio Element -->
+    <audio id="bg-music" loop>
+        <source src="Albumaty.Com_mnwaat_Dai_Dai.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Music Control Button -->
+    <button id="music-toggle" class="music-btn">
+        <span>🎵</span> Play Music
+    </button>
+
     <!-- Fullscreen Lightbox -->
     <div id="lightbox" class="lightbox hidden">
         <span class="close-btn">&times;</span>
@@ -195,7 +238,23 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // تم تعديل مسار الصور هنا كمان عشان لما الصورة تتفتح وتكبر
+            // ==================== Music Player Logic ====================
+            const bgMusic = document.getElementById('bg-music');
+            const musicToggleBtn = document.getElementById('music-toggle');
+            let isPlaying = false;
+
+            musicToggleBtn.addEventListener('click', () => {
+                if (isPlaying) {
+                    bgMusic.pause();
+                    musicToggleBtn.innerHTML = '<span>🎵</span> Play Music';
+                } else {
+                    bgMusic.play();
+                    musicToggleBtn.innerHTML = '<span>⏸️</span> Pause Music';
+                }
+                isPlaying = !isPlaying;
+            });
+
+            // ==================== Gallery Logic ====================
             const images = ['JPG/1.jpg', 'JPG/2.jpg', 'JPG/3.jpg', 'JPG/4.jpg', 'JPG/5.jpg'];
             let currentIndex = 0;
 
